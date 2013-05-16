@@ -1,0 +1,4 @@
+meld3==0.6.10
+supervisor==3.0b1
+tweepy==2.0
+wsgiref==0.1.2
