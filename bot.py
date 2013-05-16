@@ -2,7 +2,8 @@ import sys
 import tweepy
 
 # TODO: get new token here
-USER_ID = 825324804
+USER_ID = 825324804  # DavouriteQ
+#USER_ID = 33557547  # Pete Goodman
 CONSUMER_KEY = 'a9c5CRXeNeSqxHQJgYoSUg'
 CONSUMER_SECRET = 'KPBNm41iLIqxC5pM1abvXqZzdt0qrpQfSkQYeGAS8'
 ACCESS_TOKEN = '825324804-bo1JevjUZUtstfXoKHyz8XirNIIBg9KFmPIlRKIt'
@@ -13,13 +14,23 @@ auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 
 
 class CustomStreamListener(tweepy.StreamListener):
+
+    auth = None
+
+    def __init__(self, auth):
+        this.auth = auth
+
     def on_status(self, status):
         try:
             print "%s\t%s\t%s\t%s" % (status.text,
                                       status.author.screen_name,
                                       status.created_at,
                                       status.source,)
-            # TODO: post the tweet
+            # TODO: post the tweet. Is auth in scope here? Pass on init?
+            #print 'scope test %s' % auth
+            api = tweepy.API(this.auth)
+            api.update_status('tweeeeet2!')
+
         except Exception, e:
             print >> sys.stderr, 'Encountered Exception:', e
             pass
@@ -32,6 +43,5 @@ class CustomStreamListener(tweepy.StreamListener):
         print >> sys.stderr, 'Timeout...'
         return True
 
-streaming_api = tweepy.streaming.Stream(auth, CustomStreamListener(), timeout=60)
-#print >> sys.stderr, 'Filtering the public timeline for "%s"' % (' '.join(sys.argv[1:]),)
+streaming_api = tweepy.streaming.Stream(auth, CustomStreamListener(auth), timeout=60)
 streaming_api.filter(follow=[USER_ID])
