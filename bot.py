@@ -18,7 +18,8 @@ class CustomStreamListener(tweepy.StreamListener):
     auth = None
 
     def __init__(self, auth):
-        this.auth = auth
+        super(CustomStreamListener, self).__init__()
+        self.auth = auth
 
     def on_status(self, status):
         try:
@@ -26,10 +27,11 @@ class CustomStreamListener(tweepy.StreamListener):
                                       status.author.screen_name,
                                       status.created_at,
                                       status.source,)
-            # TODO: post the tweet. Is auth in scope here? Pass on init?
-            #print 'scope test %s' % auth
-            api = tweepy.API(this.auth)
-            api.update_status('tweeeeet2!')
+            # TODO: add seperate try catch for the post
+            # TODO: get output from posting tweet
+            #print "post tweet here"
+            api = tweepy.API(self.auth)
+            api.update_status(status.text)
 
         except Exception, e:
             print >> sys.stderr, 'Encountered Exception:', e
@@ -44,4 +46,5 @@ class CustomStreamListener(tweepy.StreamListener):
         return True
 
 streaming_api = tweepy.streaming.Stream(auth, CustomStreamListener(auth), timeout=60)
-streaming_api.filter(follow=[USER_ID])
+#streaming_api.filter(follow=[USER_ID])
+streaming_api.filter(follow=None, track=['bieber']) # Test search
