@@ -1,3 +1,4 @@
+import os
 import sys
 import tweepy
 
@@ -8,7 +9,7 @@ USER_ID = 825324804  # DavouriteQ
 
 # Default Values are for DavouriteQ
 CONSUMER_KEY = os.getenv('GOO_CONSUMER_KEY', 'a9c5CRXeNeSqxHQJgYoSUg')
-CONSUMER_SECRET = os.getenv('GOO_CONSUMER_KEY',
+CONSUMER_SECRET = os.getenv('GOO_CONSUMER_SECRET',
                             'KPBNm41iLIqxC5pM1abvXqZzdt0qrpQfSkQYeGAS8')
 ACCESS_TOKEN = os.getenv('GOO_ACCESS_TOKEN',
                          '825324804-bo1JevjUZUtstfXoKHyz8XirNIIBg9KFmPIlRKIt')
@@ -17,6 +18,11 @@ ACCESS_TOKEN_SECRET = os.getenv('GOO_ACCESS_TOKEN_SECRET',
 
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+
+# Test tweet
+# api = tweepy.API(auth)
+# api.update_status('Hello World')
+# sys.exit()
 
 
 class CustomStreamListener(tweepy.StreamListener):
