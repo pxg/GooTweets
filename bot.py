@@ -2,12 +2,10 @@ import os
 import sys
 import tweepy
 
-# TODO: get new token here
-# TODO: add supervisor
-USER_ID = 825324804  # DavouriteQ
-#USER_ID = 33557547  # Pete Goodman
+#USER_ID = 825324804  # DavouriteQ
+USER_ID = 33557547  # Pete Goodman
 
-# Default Values are for DavouriteQ
+# Default Values are for DavouriteQ posting
 CONSUMER_KEY = os.getenv('GOO_CONSUMER_KEY', 'a9c5CRXeNeSqxHQJgYoSUg')
 CONSUMER_SECRET = os.getenv('GOO_CONSUMER_SECRET',
                             'KPBNm41iLIqxC5pM1abvXqZzdt0qrpQfSkQYeGAS8')
@@ -26,7 +24,6 @@ auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 
 
 class CustomStreamListener(tweepy.StreamListener):
-
     auth = None
 
     def __init__(self, auth):
@@ -39,13 +36,11 @@ class CustomStreamListener(tweepy.StreamListener):
                                       status.author.screen_name,
                                       status.created_at,
                                       status.source,)
-            # TODO: get output from posting tweet
             api = tweepy.API(self.auth)
             api.update_status(status.text)
 
         except Exception, e:
             print >> sys.stderr, 'Encountered Exception:', e
-            #TODO: log the error
             pass
 
     def on_error(self, status_code):
@@ -57,5 +52,5 @@ class CustomStreamListener(tweepy.StreamListener):
         return True
 
 streaming_api = tweepy.streaming.Stream(auth, CustomStreamListener(auth), timeout=60)
-#streaming_api.filter(follow=[USER_ID])
-streaming_api.filter(follow=None, track=['bieber']) # Test search
+streaming_api.filter(follow=[USER_ID])
+#streaming_api.filter(follow=None, track=['bieber']) # Test search
