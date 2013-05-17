@@ -36,8 +36,10 @@ class CustomStreamListener(tweepy.StreamListener):
                                       status.author.screen_name,
                                       status.created_at,
                                       status.source,)
+            # don't spam people
+            tweet_text = status.text.replace('@', '_')
             api = tweepy.API(self.auth)
-            api.update_status(status.text)
+            api.update_status(tweet_text)
 
         except Exception, e:
             print >> sys.stderr, 'Encountered Exception:', e
