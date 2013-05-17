@@ -2,12 +2,18 @@ import sys
 import tweepy
 
 # TODO: get new token here
+# TODO: add supervisor
 USER_ID = 825324804  # DavouriteQ
 #USER_ID = 33557547  # Pete Goodman
-CONSUMER_KEY = 'a9c5CRXeNeSqxHQJgYoSUg'
-CONSUMER_SECRET = 'KPBNm41iLIqxC5pM1abvXqZzdt0qrpQfSkQYeGAS8'
-ACCESS_TOKEN = '825324804-bo1JevjUZUtstfXoKHyz8XirNIIBg9KFmPIlRKIt'
-ACCESS_TOKEN_SECRET = '0R7DJq72qDLtMIkZ17xDIUUjyHMPef9KaNHu1zy3PJA'
+
+# Default Values are for DavouriteQ
+CONSUMER_KEY = os.getenv('GOO_CONSUMER_KEY', 'a9c5CRXeNeSqxHQJgYoSUg')
+CONSUMER_SECRET = os.getenv('GOO_CONSUMER_KEY',
+                            'KPBNm41iLIqxC5pM1abvXqZzdt0qrpQfSkQYeGAS8')
+ACCESS_TOKEN = os.getenv('GOO_ACCESS_TOKEN',
+                         '825324804-bo1JevjUZUtstfXoKHyz8XirNIIBg9KFmPIlRKIt')
+ACCESS_TOKEN_SECRET = os.getenv('GOO_ACCESS_TOKEN_SECRET',
+                                '0R7DJq72qDLtMIkZ17xDIUUjyHMPef9KaNHu1zy3PJA')
 
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
@@ -27,14 +33,13 @@ class CustomStreamListener(tweepy.StreamListener):
                                       status.author.screen_name,
                                       status.created_at,
                                       status.source,)
-            # TODO: add seperate try catch for the post
             # TODO: get output from posting tweet
-            #print "post tweet here"
             api = tweepy.API(self.auth)
             api.update_status(status.text)
 
         except Exception, e:
             print >> sys.stderr, 'Encountered Exception:', e
+            #TODO: log the error
             pass
 
     def on_error(self, status_code):
